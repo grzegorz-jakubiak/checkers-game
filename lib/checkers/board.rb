@@ -2,6 +2,8 @@
 
 module Checkers
   class Board
+    attr_reader :board
+
     class << self
       def generate_boards(board_object, player)
         moves = board_object.find_moves_for_player(player: player)
@@ -11,7 +13,7 @@ module Checkers
       end
 
       def make_move(board_object, move)
-        new_board = board_object.send(:board).dup
+        new_board = board_object.board.dup
 
         if move.is_a?(Checkers::JumpMove)
           new_board[*move.end_square] = new_board[*move.start_square]
