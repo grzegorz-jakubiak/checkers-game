@@ -2,6 +2,10 @@
 
 module Checkers
   class Board
+    extend Forwardable
+
+    def_delegators :@board, :[], :[]=
+
     def initialize
       @board = set_board
     end
