@@ -2,6 +2,28 @@
 
 module Checkers
   class Board
+    class << self
+      def generate_boards(board_object, player)
+        moves = board_object.find_moves_for_player(player: player)
+        moves.map do |move|
+          make_move(board_object, move)
+        end
+      end
+
+      def make_move(board_object, move)
+        new_board = board_object.send(:board).dup
+
+        if move.is_a?(Checkers::JumpMove)
+          new_board[*move.end_square] = new_board[*move.start_square]
+          new_board[*move.start_square] = :empty
+          new_board[*move.jump_over_square] = :empty
+        else
+          new_board[*move.end_square] = new_board[*move.start_square]
+          new_board[*move.start_square] = :empty
+        end
+        Board.new(board: new_board)
+      end
+    end
 
     def initialize(board: nil)
       @board = board || set_board
