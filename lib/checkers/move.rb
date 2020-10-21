@@ -13,7 +13,4 @@ module Checkers
       start_square == other.start_square && end_square == other.end_square
     end
   end
-
-  class JumpMove < Move
-  end
 end
