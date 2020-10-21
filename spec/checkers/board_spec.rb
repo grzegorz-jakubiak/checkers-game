@@ -46,5 +46,26 @@ RSpec.describe Checkers::Board do
 
       it_behaves_like 'returns expected moves'
     end
+
+    context 'when jump' do
+      let(:board) do
+        described_class.new(board: Matrix[
+          %i[empty ai empty ai empty ai empty ai],
+          %i[ai empty ai empty ai empty ai empty],
+          %i[empty ai empty empty empty ai empty ai],
+          %i[empty empty ai empty empty empty empty empty],
+          %i[empty human empty empty empty empty empty empty],
+          %i[empty empty human empty human empty human empty],
+          %i[empty human empty human empty human empty human],
+          %i[human empty human empty human empty human empty]
+        ])
+      end
+      let(:player) { :ai }
+      let(:expected_moves) do
+        [Checkers::JumpMove.new([3, 2], [5, 0])]
+      end
+
+      it_behaves_like 'returns expected moves'
+    end
   end
 end

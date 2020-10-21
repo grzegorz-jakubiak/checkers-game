@@ -6,8 +6,8 @@ module Checkers
 
     def_delegators :@board, :[], :[]=
 
-    def initialize
-      @board = set_board
+    def initialize(board: nil)
+      @board = board || set_board
     end
 
     def find_moves_for_player(player:)
@@ -17,7 +17,7 @@ module Checkers
 
         moves = find_available_moves(row: row, col: col, player: player)
         found_moves += moves
-        break if moves.any? { |move| move.is_a?(Checkers::JumpMove) }
+        break found_moves = moves if moves.any? { |move| move.is_a?(Checkers::JumpMove) }
       end
       found_moves
     end
