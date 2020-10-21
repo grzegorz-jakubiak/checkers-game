@@ -27,7 +27,7 @@ module Checkers
 
         vector = [adjacent_row - row, adjacent_col - col]
         jump_square = [adjacent_row + vector[0], adjacent_col + vector[1]]
-        jump_move << jump_square if within_board?(row: jump_square[0], col: jump_square[1])
+        jump_moves << jump_square if within_board?(row: jump_square[0], col: jump_square[1])
       end
       jump_moves
     end
@@ -42,9 +42,9 @@ module Checkers
 
     def possible_squares(row:, col:, player:, &block)
       if player == :human
-        [[row + 1, col + 1], [row + 1, col - 1]].select(&block)
-      else
         [[row - 1, col + 1], [row - 1, col - 1]].select(&block)
+      else
+        [[row + 1, col + 1], [row + 1, col - 1]].select(&block)
       end
     end
 
@@ -53,7 +53,7 @@ module Checkers
     end
 
     def within_board?(row:, col:)
-      row <= 7 && col >= 0
+      row <= 7 && row >= 0 && col <=7 && col >= 0
     end
 
     def square_empty?(row:, col:)
