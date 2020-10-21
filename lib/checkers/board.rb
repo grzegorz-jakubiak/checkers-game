@@ -10,6 +10,17 @@ module Checkers
       @board = set_board
     end
 
+    def find_moves_for_player(player:)
+      @board.each_with_index.each_with_object({}) do |data, acc|
+        e, row, col = data
+
+        if e == player
+          moves = find_available_moves(row: row, col: col, player: player)
+          acc[[row, col]] = moves if moves.any?
+        end
+      end
+    end
+
     private
 
     def find_available_moves(row:, col:, player:)
@@ -53,7 +64,7 @@ module Checkers
     end
 
     def within_board?(row:, col:)
-      row <= 7 && row >= 0 && col <=7 && col >= 0
+      row <= 7 && row >= 0 && col <= 7 && col >= 0
     end
 
     def square_empty?(row:, col:)
