@@ -7,9 +7,7 @@ RSpec.describe Checkers::Board do
 
     shared_examples 'returns expected moves' do
       it 'contains expected moves' do
-        result.each do |key, value|
-          expect(expected_moves[key]).to match_array(value)
-        end
+        expect(result).to match_array(expected_moves)
       end
     end
 
@@ -21,7 +19,11 @@ RSpec.describe Checkers::Board do
           [5, 2] => [[4, 1], [4, 3]],
           [5, 4] => [[4, 3], [4, 5]],
           [5, 6] => [[4, 5], [4, 7]]
-        }
+        }.inject([]) do |acc, key_value|
+          key, value = key_value
+          acc += value.map {Checkers::Move.new(key, _1)}
+          acc
+        end
       end
 
       it_behaves_like 'returns expected moves'
@@ -35,7 +37,11 @@ RSpec.describe Checkers::Board do
           [2, 3] => [[3, 2], [3, 4]],
           [2, 5] => [[3, 4], [3, 6]],
           [2, 7] => [[3, 6]]
-        }
+        }.inject([]) do |acc, key_value|
+          key, value = key_value
+          acc += value.map {Checkers::Move.new(key, _1)}
+          acc
+        end
       end
 
       it_behaves_like 'returns expected moves'

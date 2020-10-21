@@ -11,14 +11,15 @@ module Checkers
     end
 
     def find_moves_for_player(player:)
-      @board.each_with_index.each_with_object({}) do |data, acc|
-        e, row, col = data
+      found_moves = []
+      @board.each_with_index do |e, row, col|
+        next unless e == player
 
-        if e == player
-          moves = find_available_moves(row: row, col: col, player: player)
-          acc[[row, col]] = moves if moves.any?
-        end
+        moves = find_available_moves(row: row, col: col, player: player)
+        found_moves += moves
+        break if moves.any? { |move| move.is_a?(Checkers::JumpMove) }
       end
+      found_moves
     end
 
     private
@@ -38,24 +39,30 @@ module Checkers
 
         vector = [adjacent_row - row, adjacent_col - col]
         jump_square = [adjacent_row + vector[0], adjacent_col + vector[1]]
-        jump_moves << jump_square if within_board?(row: jump_square[0], col: jump_square[1])
+        if within_board?(row: jump_square[0], col: jump_square[1])
+          jump_moves << Checkers::JumpMove.new([row, col], jump_square)
+        end
       end
       jump_moves
     end
 
     def adjacent_squares(row:, col:, player:)
-      possible_squares(row: row, col: col, player: player) { |square| within_board?(row: square[0], col: square[1]) }
+      possible_squares(row: row, col: col, player: player) do |squares|
+        squares.select { |square| within_board?(row: square[0], col: square[1]) }
+      end
     end
 
     def basic_moves(row:, col:, player:)
-      possible_squares(row: row, col: col, player: player) { |square| move?(row: square[0], col: square[1]) }
+      possible_squares(row: row, col: col, player: player) do |squares|
+        squares.filter_map { |square| Checkers::Move.new([row, col], square) if move?(row: square[0], col: square[1]) }
+      end
     end
 
-    def possible_squares(row:, col:, player:, &block)
+    def possible_squares(row:, col:, player:)
       if player == :human
-        [[row - 1, col + 1], [row - 1, col - 1]].select(&block)
+        yield [[row - 1, col + 1], [row - 1, col - 1]]
       else
-        [[row + 1, col + 1], [row + 1, col - 1]].select(&block)
+        yield [[row + 1, col + 1], [row + 1, col - 1]]
       end
     end
 
