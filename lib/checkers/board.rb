@@ -2,7 +2,9 @@
 
 module Checkers
   class Board
-    attr_reader :board, :jumped
+    include Score
+
+    attr_reader :board, :jumped, :score
 
     class << self
       def generate_boards(board_object, player)
@@ -46,7 +48,7 @@ module Checkers
       found_moves
     end
 
-    private
+    protected
 
     def find_available_moves(row:, col:, player:)
       jumps = jump_moves(row: row, col: col, player: player)
@@ -76,6 +78,12 @@ module Checkers
       end
     end
 
+    def movable_squares(row:, col:, player:)
+      possible_squares(row: row, col: col, player: player) do |squares|
+        squares.select { |square| move?(row: square[0], col: square[1]) }
+      end
+    end
+
     def basic_moves(row:, col:, player:)
       possible_squares(row: row, col: col, player: player) do |squares|
         squares.filter_map { |square| Checkers::Move.new([row, col], square) if move?(row: square[0], col: square[1]) }
@@ -89,6 +97,8 @@ module Checkers
         yield [[row + 1, col + 1], [row + 1, col - 1]]
       end
     end
+
+    private
 
     def move?(row:, col:)
       within_board?(row: row, col: col) && square_empty?(row: row, col: col)

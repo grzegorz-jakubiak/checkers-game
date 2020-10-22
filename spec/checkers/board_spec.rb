@@ -1,6 +1,62 @@
 # frozen_string_literal: true
 
 RSpec.describe Checkers::Board do
+  describe '#number_of_pieces' do
+    subject(:result) { board.number_of_pieces(player: player) }
+    let(:player) { :human }
+
+    context 'when game started' do
+      let(:board) { described_class.new }
+
+      it 'returns 0' do
+        expect(result).to eq(0)
+      end
+    end
+
+    context 'when ai jumped over human' do
+      let(:board) do
+        described_class.new(board: Matrix[
+          %i[empty ai empty ai empty ai empty ai],
+          %i[ai empty ai empty ai empty ai empty],
+          %i[empty ai empty empty empty ai empty ai],
+          %i[empty empty empty empty empty empty empty empty],
+          %i[empty empty empty empty empty empty empty empty],
+          %i[ai empty human empty human empty human empty],
+          %i[empty human empty human empty human empty human],
+          %i[human empty human empty human empty human empty]
+        ])
+      end
+
+      it 'returns 1' do
+        expect(result).to eq(1)
+      end
+    end
+  end
+
+  describe '#number_of_pieces_on_opponets_side' do
+    subject(:result) { board.number_of_pieces_on_opponets_side(player: player) }
+    let(:player) { :human }
+
+    context 'when ai jumped over human' do
+      let(:board) do
+        described_class.new(board: Matrix[
+          %i[empty ai empty ai empty ai empty ai],
+          %i[ai empty ai empty ai empty ai empty],
+          %i[empty ai empty empty empty ai empty ai],
+          %i[empty empty empty empty empty empty empty empty],
+          %i[empty empty empty empty empty empty empty empty],
+          %i[ai empty human empty human empty human empty],
+          %i[empty human empty human empty human empty human],
+          %i[human empty human empty human empty human empty]
+        ])
+      end
+
+      it 'returns 1' do
+        expect(result).to eq(1)
+      end
+    end
+  end
+
   describe '#find_moves_for_player' do
     subject(:result) { board.find_moves_for_player(player: player) }
     let(:board) { described_class.new }
