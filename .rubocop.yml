@@ -15,7 +15,5 @@ Metrics/BlockLength:
   Exclude: 
     - spec/**/*
 
-Naming/MethodParameterName:
-  Enabled: true
-  Exclude:
-    - lib/checkers/ai/decision.rb
+Naming/AccessorMethodName:
+  Enabled: false

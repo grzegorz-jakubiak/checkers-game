@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'matrix'
+require 'observer'
 
 require 'zeitwerk'
 
