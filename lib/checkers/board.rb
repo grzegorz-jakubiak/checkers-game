@@ -42,6 +42,9 @@ module Checkers
         movable_pieces(player: player)
     end
 
+    def count_pieces(player:)
+      board.count { |piece| piece == player }
+    end
     def find_moves_for_player(player:)
       found_moves = []
       @board.each_with_index do |e, row, col|
