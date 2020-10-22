@@ -20,7 +20,7 @@ module Checkers
 
         new_board[*move.end_square] = new_board[*move.start_square]
 
-        if move.is_a?(Checkers::JumpMove)
+        if move.is_a?(JumpMove)
           new_board[*move.start_square] = :empty
           new_board[*move.jump_over_square] = :empty
           jumped = true
@@ -49,7 +49,7 @@ module Checkers
 
         moves = find_available_moves(row: row, col: col, player: player)
         found_moves += moves
-        break found_moves = moves if moves.any? { |move| move.is_a?(Checkers::JumpMove) }
+        break found_moves = moves if moves.any? { |move| move.is_a?(JumpMove) }
       end
       found_moves
     end
@@ -71,9 +71,7 @@ module Checkers
 
         vector = [adjacent_row - row, adjacent_col - col]
         jump_square = [adjacent_row + vector[0], adjacent_col + vector[1]]
-        if within_board?(row: jump_square[0], col: jump_square[1])
-          jump_moves << Checkers::JumpMove.new([row, col], jump_square)
-        end
+        jump_moves << JumpMove.new([row, col], jump_square) if within_board?(row: jump_square[0], col: jump_square[1])
       end
       jump_moves
     end
@@ -92,7 +90,7 @@ module Checkers
 
     def basic_moves(row:, col:, player:)
       possible_squares(row: row, col: col, player: player) do |squares|
-        squares.filter_map { |square| Checkers::Move.new([row, col], square) if move?(row: square[0], col: square[1]) }
+        squares.filter_map { |square| Move.new([row, col], square) if move?(row: square[0], col: square[1]) }
       end
     end
 
