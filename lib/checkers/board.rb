@@ -18,13 +18,13 @@ module Checkers
         new_board = board_object.board.dup
         jumped = false
 
+        new_board[*move.end_square] = new_board[*move.start_square]
+
         if move.is_a?(Checkers::JumpMove)
-          new_board[*move.end_square] = new_board[*move.start_square]
           new_board[*move.start_square] = :empty
           new_board[*move.jump_over_square] = :empty
           jumped = true
         else
-          new_board[*move.end_square] = new_board[*move.start_square]
           new_board[*move.start_square] = :empty
         end
         Board.new(board: new_board, jumped: jumped)
