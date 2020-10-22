@@ -4,7 +4,7 @@ module Checkers
   class Board
     include Score
 
-    attr_reader :board, :jumped, :score
+    attr_reader :board, :jumped
 
     class << self
       def generate_boards(board_object, player)
@@ -34,6 +34,12 @@ module Checkers
     def initialize(board: nil, jumped: false)
       @board = board || set_board
       @jumped = jumped
+    end
+
+    def calculate_score(player:)
+      number_of_pieces(player: player) +
+        number_of_pieces_on_opponets_side(player: player) +
+        movable_pieces(player: player)
     end
 
     def find_moves_for_player(player:)

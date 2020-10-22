@@ -3,11 +3,13 @@
 module Checkers
   module AI
     class Node
-      attr_reader :children, :player, :board, :score
+      attr_reader :children, :player, :board
+      attr_accessor :score
 
       def initialize(board, player, depth = 0)
         @board = board
         @player = player
+        @score = board.calculate_score(player: player)
         @children = generate_children(depth)
       end
 
