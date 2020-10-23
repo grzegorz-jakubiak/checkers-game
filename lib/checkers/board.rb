@@ -4,8 +4,11 @@ module Checkers
   class Board
     include Score
     include Moves
+    extend Forwardable
 
     attr_reader :board, :jumped
+
+    def_delegators :board, :each_with_index, :row_count
 
     class << self
       def generate_boards(board_object, player)
