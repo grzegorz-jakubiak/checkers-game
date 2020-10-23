@@ -52,10 +52,10 @@ module Checkers
         board.each_with_index do |piece, row, col|
           next if piece == :empty
 
-          if piece == player
-            player_pieces += 1 if movable_squares(row: row, col: col, player: player).any?
-          else
-            opponent_pieces += 1 if movable_squares(row: row, col: col, player: opponent).any?
+          if piece == player && movable_squares(row: row, col: col, player: player).any?
+            player_pieces += 1
+          elsif movable_squares(row: row, col: col, player: opponent).any?
+            opponent_pieces += 1
           end
         end
 
