@@ -5,14 +5,18 @@ module Checkers
     class Engine
       attr_reader :state
 
-      private_class_method :new
-
-      def self.start_game(starting_player)
-        Engine.new(starting_player)
+      def initialize(state)
+        @state = state
+        @state.add_observer(self)
       end
 
-      def initialize(starting_player)
-        @state = State.new(starting_player)
+      def update
+        return if state.winner || state.tie
+
+        check_win
+        check_tie
+
+        :make_move_ai if state.turn == :ai
       end
 
       def check_win
