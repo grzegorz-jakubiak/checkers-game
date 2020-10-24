@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
 
 require 'bundler/setup'
 require 'checkers'
@@ -12,10 +13,7 @@ on :mouse_up do |event|
   x = event.x
   y = event.y
 
-  if event.button == :left
-    scene.handle_click(x, y)
-  end
+  scene.handle_click(x, y) if event.button == :left
 end
 
 show
-
