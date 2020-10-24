@@ -1,0 +1,21 @@
+#!/usr/bin/env ruby
+
+require 'bundler/setup'
+require 'checkers'
+
+state = Checkers::Game::State.new(:human)
+scene = Checkers::GUI::Scene.new(state)
+ai = Checkers::AI::Engine::Minmax.new
+game_engine = Checkers::Game::Engine.new(state, ai)
+
+on :mouse_up do |event|
+  x = event.x
+  y = event.y
+
+  if event.button == :left
+    scene.handle_click(x, y)
+  end
+end
+
+show
+
