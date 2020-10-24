@@ -19,13 +19,13 @@ module Checkers
             value = Float::MIN
 
             node.children.each do |child|
-              value = max(value, minmax(child, depth - 1, !maxplayer))
+              value = max(value, minmax(child, tree_depth - 1, !maxplayer))
             end
           else
             value = Float::MAX
 
             node.children.each do |child|
-              value = min(value, minmax(child, depth - 1, !maxplayer))
+              value = min(value, minmax(child, tree_depth - 1, !maxplayer))
             end
           end
 

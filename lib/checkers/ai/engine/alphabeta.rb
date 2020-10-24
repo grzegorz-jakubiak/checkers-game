@@ -15,14 +15,14 @@ module Checkers
 
           if maxplayer
             node.children.each do |child|
-              a = max(a, alphabeta(child, depth - 1, a, b, !maxplayer))
+              a = max(a, alphabeta(child, tree_depth - 1, a, b, !maxplayer))
               break if a >= b
             end
 
             node.score = a
           else
             node.children.each do |child|
-              b = min(b, alphabeta(child, depth - 1, a, b, !maxplayer))
+              b = min(b, alphabeta(child, tree_depth - 1, a, b, !maxplayer))
               break if a >= b
             end
 
