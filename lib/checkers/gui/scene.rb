@@ -23,21 +23,27 @@ module Checkers
       end
 
       def each(&block)
-        @objects.each(&block)
+        @board_objects.each(&block)
+      end
+
+      def find_index(&block)
+        @board_objects.find_index(&block)
       end
 
       private
 
       def render_board
+        @board_objects = Matrix.zero(8)
+
         x = y = 0
         square_color = 'white'
 
         @state.board.each_with_index do |square, row, col|
           x = col * SQUARE_SIZE
           y = row * SQUARE_SIZE
-          @objects << Square.new(x: x, y: y, size: SQUARE_SIZE, color: square_color)
+          @board_objects[row, col] = [Square.new(x: x, y: y, size: SQUARE_SIZE, color: square_color)]
           unless square == :empty
-            @objects << Circle.new(
+            @board_objects[row, col] << Circle.new(
               x: x + CIRCLE_TRANSLATION,
               y: y + CIRCLE_TRANSLATION,
               radius: RADIUS,
