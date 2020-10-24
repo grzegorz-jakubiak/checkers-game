@@ -20,15 +20,17 @@ module Checkers
           return if @allowed_squares.empty? && @allowed_moves.empty?
 
           move_made = @allowed_moves.find { |move| move.end_square == [row, col] }
-          new_board = Checkers::Board.make_move(@state.board, move_made)
-          @state.set_state(board: new_board, turn: :ai)
+          if move_made
+            new_board = Checkers::Board.make_move(@state.board, move_made)
+            @state.set_state(board: new_board, turn: :ai)
+          end
         end
       end
 
       private
 
       def piece_clicked?(x, y)
-        @board.any? { |objects| objects.any? { _1.contains?(x, y) && _1.is_a?(Circle) } }
+        @board.any? { |objects| objects.any? { _1.contains?(x, y) && _1.is_a?(Ruby2D::Piece) && _1.player == :human } }
       end
 
       def click_board_indices(x, y)

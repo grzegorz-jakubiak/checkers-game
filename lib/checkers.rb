@@ -10,6 +10,7 @@ require 'zeitwerk'
 loader = Zeitwerk::Loader.for_gem
 loader.inflector.inflect(
   'ai' => 'AI',
-  'gui' => 'GUI'
+  'gui' => 'GUI',
+  'ruby2d' => 'Ruby2D'
 )
 loader.setup
