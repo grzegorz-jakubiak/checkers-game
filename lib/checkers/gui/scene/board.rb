@@ -16,10 +16,6 @@ module Checkers
           render_board
         end
 
-        def get_object(row, col)
-          @board_objects[row, col].first
-        end
-
         def each(&block)
           @board_objects.each(&block)
         end
