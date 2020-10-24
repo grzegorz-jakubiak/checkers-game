@@ -28,6 +28,10 @@ module Checkers
           @board_objects.find_index(&block)
         end
 
+        def square_at(row, col)
+          @board_objects[row, col].find { |object| object.is_a?(Square) }
+        end
+
         private
 
         def render_board

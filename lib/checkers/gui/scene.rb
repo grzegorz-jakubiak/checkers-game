@@ -3,55 +3,37 @@
 module Checkers
   module GUI
     class Scene
-      include Enumerable
-
-      SQUARE_SIZE = 50
-      CIRCLE_TRANSLATION = SQUARE_SIZE * Integer.sqrt(2) / 2
-      RADIUS = 20
-
       def initialize(state)
-        @objects = []
         @state = state
-        @state.add_observer(self)
-        render_board
+        @board = Board.new(state)
+        @allowed_squares = []
+        @allowed_moves = []
       end
 
-      def update
-        @objects = [] if @objects.any?
+      def handle_click(x, y)
+        row, col = click_board_indices(x, y)
 
-        render_board
-      end
+        if piece_clicked?(x, y)
+          @allowed_moves = @state.board.find_available_moves(row: row, col: col, player: :human)
+          @allowed_squares = @allowed_moves.map { |move| @board.square_at(*move.end_square) }
+        else
+          return if @allowed_squares.empty? && @allowed_moves.empty?
 
-      def each(&block)
-        @board_objects.each(&block)
-      end
-
-      def find_index(&block)
-        @board_objects.find_index(&block)
+          move_made = @allowed_moves.find { |move| move.end_square == [row, col] }
+          new_board = Checkers::Board.make_move(@state.board, move_made)
+          @state.set_state(board: new_board, turn: :ai)
+        end
       end
 
       private
 
-      def render_board
-        @board_objects = Matrix.zero(8)
+      def piece_clicked?(x, y)
+        @board.any? { |objects| objects.any? { _1.contains?(x, y) && _1.is_a?(Circle) } }
+      end
 
-        x = y = 0
-        square_color = 'white'
-
-        @state.board.each_with_index do |square, row, col|
-          x = col * SQUARE_SIZE
-          y = row * SQUARE_SIZE
-          @board_objects[row, col] = [Square.new(x: x, y: y, size: SQUARE_SIZE, color: square_color)]
-          unless square == :empty
-            @board_objects[row, col] << Circle.new(
-              x: x + CIRCLE_TRANSLATION,
-              y: y + CIRCLE_TRANSLATION,
-              radius: RADIUS,
-              color: square == :human ? 'red' : 'yellow'
-            )
-          end
-          square_color = square_color == 'white' ? 'black' : 'white'
-          square_color = square_color == 'white' ? 'black' : 'white' if col == @state.board.row_count - 1
+      def click_board_indices(x, y)
+        @board.find_index do |objects|
+          objects.any? { _1.contains?(x, y) }
         end
       end
     end
