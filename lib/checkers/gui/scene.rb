@@ -32,12 +32,14 @@ module Checkers
       private
 
       def piece_clicked?(x, y)
-        @board.any? { |objects| objects.any? { _1.contains?(x, y) && _1.is_a?(Ruby2D::Piece) && _1.player == :human } }
+        @board.any? do |object|
+          object.contains?(x, y) && object.is_a?(Ruby2D::SquareWithPiece) && object.player == :human
+        end
       end
 
       def click_board_indices(x, y)
-        @board.find_index do |objects|
-          objects.any? { _1.contains?(x, y) }
+        @board.find_index do |object|
+          object.contains?(x, y)
         end
       end
     end

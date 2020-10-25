@@ -24,13 +24,18 @@ module Checkers
           @board_objects.find_index(&block)
         end
 
+        def clear
+          @board_objects.each(&:remove) if @board_objects&.any?
+        end
+
         def square_at(row, col)
-          @board_objects[row, col].find { |object| object.is_a?(Square) }
+          return @board_objects[row, col] if @board_objects[row, col].is_a?(Square)
         end
 
         private
 
         def render_board
+          clear
           @board_objects = Matrix.zero(8)
 
           x = y = 0
@@ -39,16 +44,19 @@ module Checkers
           @state.board.each_with_index do |square, row, col|
             x = col * SQUARE_SIZE
             y = row * SQUARE_SIZE
-            @board_objects[row, col] = [Square.new(x: x, y: y, size: SQUARE_SIZE, color: square_color)]
-            unless square.zero?
-              @board_objects[row, col] << Ruby2D::Piece.new(
-                x: x + CIRCLE_TRANSLATION,
-                y: y + CIRCLE_TRANSLATION,
-                radius: RADIUS,
-                color: HUMAN_PIECES.include?(square) ? 'red' : 'yellow',
-                player: HUMAN_PIECES.include?(square) ? :human : :ai
-              )
-            end
+            @board_objects[row, col] = if square.zero?
+                                         Square.new(x: x, y: y, size: SQUARE_SIZE, color: square_color)
+                                       else
+                                         Ruby2D::SquareWithPiece.new(
+                                           x: x,
+                                           y: y,
+                                           size: SQUARE_SIZE,
+                                           color: square_color,
+                                           piece_color: HUMAN_PIECES.include?(square) ? 'red' : 'yellow',
+                                           player: HUMAN_PIECES.include?(square) ? :human : :ai
+                                         )
+                                       end
+
             square_color = square_color == 'white' ? 'black' : 'white'
             square_color = square_color == 'white' ? 'black' : 'white' if col == @state.board.row_count - 1
           end
