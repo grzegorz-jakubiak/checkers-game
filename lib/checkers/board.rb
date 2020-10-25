@@ -53,7 +53,7 @@ module Checkers
     end
 
     def count_pieces(player:)
-      board.count { |piece| piece == player }
+      board.count { |piece| player_pieces(player).include?(piece) }
     end
 
     def find_moves_for_player(player:)

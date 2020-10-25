@@ -18,7 +18,7 @@ module Checkers
 
           vector = [adjacent_row - row, adjacent_col - col]
           jump_square = [adjacent_row + vector[0], adjacent_col + vector[1]]
-          jump_moves << JumpMove.new([row, col], jump_square) if within_board?(row: jump_square[0], col: jump_square[1])
+          jump_moves << JumpMove.new([row, col], jump_square) if move?(row: jump_square[0], col: jump_square[1])
         end
         jump_moves
       end
