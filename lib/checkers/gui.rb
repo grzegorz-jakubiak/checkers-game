@@ -5,6 +5,5 @@ module Checkers
     SQUARE_SIZE = 50
     CIRCLE_TRANSLATION = SQUARE_SIZE * Integer.sqrt(2) / 2
     RADIUS = 20
-    MOVE_RADIUS = 10
   end
 end
