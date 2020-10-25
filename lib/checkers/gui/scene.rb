@@ -21,6 +21,8 @@ module Checkers
 
           move_made = @allowed_moves.find { |move| move.end_square == [row, col] }
           if move_made
+            @allowed_moves = []
+            @allowed_squares = []
             new_board = Checkers::Board.make_move(@state.board, move_made)
             @state.set_state(board: new_board, turn: :ai)
           end
