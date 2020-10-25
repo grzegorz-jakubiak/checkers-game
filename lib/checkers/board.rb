@@ -59,7 +59,7 @@ module Checkers
     def find_moves_for_player(player:)
       found_moves = []
       @board.each_with_index do |e, row, col|
-        next unless pieces(player).include?(e)
+        next unless player_pieces(player).include?(e)
 
         moves = find_available_moves(row: row, col: col, player: player)
         found_moves += moves
@@ -70,7 +70,7 @@ module Checkers
 
     protected
 
-    def pieces(player)
+    def player_pieces(player)
       player == :human ? HUMAN_PIECES : AI_PIECES
     end
 

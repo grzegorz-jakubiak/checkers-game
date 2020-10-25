@@ -5,8 +5,8 @@ module Checkers
     module Score
       def number_of_pieces(player:)
         opponent = opponent(player)
-        player_pieces = board.count { |piece| pieces(player).include?(piece) }
-        opponent_pieces = board.count { |piece| pieces(opponent).include?(piece) }
+        player_pieces = board.count { |piece| player_pieces(player).include?(piece) }
+        opponent_pieces = board.count { |piece| player_pieces(opponent).include?(piece) }
         opponent_pieces - player_pieces
       end
 
@@ -16,13 +16,13 @@ module Checkers
         player_pieces = board.each_with_index.count do |piece, row, _col|
           next if row >= 3
 
-          pieces(player).include?(piece)
+          player_pieces(player).include?(piece)
         end
 
         opponent_pieces = board.each_with_index.count do |piece, row, _col|
           next unless row == 5
 
-          pieces(opponent).include?(piece)
+          player_pieces(opponent).include?(piece)
         end
 
         opponent_pieces - player_pieces
@@ -35,7 +35,7 @@ module Checkers
         player_squares = 0
 
         board.each_with_index do |square, row, _col|
-          next if pieces(player).include?(square) || pieces(opponent).include?(square)
+          next if player_pieces(player).include?(square) || player_pieces(opponent).include?(square)
 
           opponent_squares += 1 if row == 7
           player_squares += 1 if row.zero?
@@ -52,7 +52,7 @@ module Checkers
         board.each_with_index do |piece, row, col|
           next if piece.zero?
 
-          if pieces(player).include?(piece) && movable_squares(row: row, col: col, player: player).any?
+          if player_pieces(player).include?(piece) && movable_squares(row: row, col: col, player: player).any?
             player_pieces += 1
           elsif movable_squares(row: row, col: col, player: opponent).any?
             opponent_pieces += 1

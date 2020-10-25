@@ -14,7 +14,7 @@ module Checkers
         jump_moves = []
         adjacent_squares(row: row, col: col, player: player).each do |square|
           adjacent_row, adjacent_col = square
-          next if [0, *pieces(player)].include?(@board[adjacent_row, adjacent_col])
+          next if [0, *player_pieces(player)].include?(@board[adjacent_row, adjacent_col])
 
           vector = [adjacent_row - row, adjacent_col - col]
           jump_square = [adjacent_row + vector[0], adjacent_col + vector[1]]
