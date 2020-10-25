@@ -41,10 +41,10 @@ module Checkers
           x = y = 0
           square_color = 'white'
 
-          @state.board.each_with_index do |square, row, col|
+          @state.board.each_with_index do |piece, row, col|
             x = col * SQUARE_SIZE
             y = row * SQUARE_SIZE
-            @board_objects[row, col] = if square.zero?
+            @board_objects[row, col] = if piece.zero?
                                          Square.new(x: x, y: y, size: SQUARE_SIZE, color: square_color)
                                        else
                                          Ruby2D::SquareWithPiece.new(
@@ -52,8 +52,7 @@ module Checkers
                                            y: y,
                                            size: SQUARE_SIZE,
                                            color: square_color,
-                                           piece_color: HUMAN_PIECES.include?(square) ? 'red' : 'yellow',
-                                           player: HUMAN_PIECES.include?(square) ? :human : :ai
+                                           piece: piece
                                          )
                                        end
 

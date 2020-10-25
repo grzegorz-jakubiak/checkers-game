@@ -6,6 +6,7 @@ module Checkers
       extend Forwardable
 
       def_delegators :@piece, :player
+      attr_reader :piece
 
       def initialize(opts = {})
         @piece = Piece.new(
@@ -13,8 +14,7 @@ module Checkers
           y: opts[:y] + Checkers::GUI::CIRCLE_TRANSLATION,
           z: 1,
           radius: Checkers::GUI::RADIUS,
-          color: opts[:piece_color],
-          player: opts[:player]
+          piece: opts[:piece]
         )
         super(opts.slice(:x, :y, :size, :color))
       end
