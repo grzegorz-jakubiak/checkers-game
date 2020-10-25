@@ -30,7 +30,13 @@ module Checkers
         new_board = board_object.board.dup
         jumped = false
 
-        new_board[*move.end_square] = new_board[*move.start_square]
+        new_board[*move.end_square] = if move.end_square[0].zero? && new_board[*move.start_square] == HUMAN_PIECE
+                                        HUMAN_KING
+                                      elsif move.end_square[0] == 7 && new_board[*move.start_square] == AI_PIECE
+                                        AI_KING
+                                      else
+                                        new_board[*move.start_square]
+                                      end
         new_board[*move.start_square] = 0
 
         if move.is_a?(JumpMove)
@@ -49,7 +55,8 @@ module Checkers
     def calculate_score(player:)
       number_of_pieces(player: player) +
         number_of_pieces_on_opponets_side(player: player) +
-        movable_pieces(player: player)
+        3 * movable_pieces(player: player) +
+        4 * number_of_unoccupied_promotion_squares(player: player)
     end
 
     def count_pieces(player:)
@@ -87,10 +94,20 @@ module Checkers
     end
 
     def possible_squares(row:, col:, player:)
+      move_up = [[row - 1, col + 1], [row - 1, col - 1]]
+      move_down = [[row + 1, col + 1], [row + 1, col - 1]]
       if player == :human
-        yield [[row - 1, col + 1], [row - 1, col - 1]]
+        if @board[row, col] == HUMAN_PIECE
+          yield move_up
+        else
+          yield(move_up + move_down)
+        end
       else
-        yield [[row + 1, col + 1], [row + 1, col - 1]]
+        if @board[row, col] == AI_PIECE
+          yield move_down
+        else
+          yield(move_down + move_up)
+        end
       end
     end
 
