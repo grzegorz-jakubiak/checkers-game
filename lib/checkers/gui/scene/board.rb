@@ -40,13 +40,13 @@ module Checkers
             x = col * SQUARE_SIZE
             y = row * SQUARE_SIZE
             @board_objects[row, col] = [Square.new(x: x, y: y, size: SQUARE_SIZE, color: square_color)]
-            unless square == :empty
+            unless square.zero?
               @board_objects[row, col] << Ruby2D::Piece.new(
                 x: x + CIRCLE_TRANSLATION,
                 y: y + CIRCLE_TRANSLATION,
                 radius: RADIUS,
-                color: square == :human ? 'red' : 'yellow',
-                player: square
+                color: HUMAN_PIECES.include?(square) ? 'red' : 'yellow',
+                player: HUMAN_PIECES.include?(square) ? :human : :ai
               )
             end
             square_color = square_color == 'white' ? 'black' : 'white'

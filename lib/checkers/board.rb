@@ -1,6 +1,14 @@
 # frozen_string_literal: true
 
 module Checkers
+  HUMAN_PIECE = -1
+  HUMAN_KING = -2
+  HUMAN_PIECES = [HUMAN_PIECE, HUMAN_KING].freeze
+
+  AI_PIECE = 1
+  AI_KING = 2
+  AI_PIECES = [AI_PIECE, AI_KING].freeze
+
   class Board
     include Score
     include Moves
@@ -23,10 +31,10 @@ module Checkers
         jumped = false
 
         new_board[*move.end_square] = new_board[*move.start_square]
-        new_board[*move.start_square] = :empty
+        new_board[*move.start_square] = 0
 
         if move.is_a?(JumpMove)
-          new_board[*move.jump_over_square] = :empty
+          new_board[*move.jump_over_square] = 0
           jumped = true
         end
         Board.new(board: new_board, jumped: jumped)
@@ -51,7 +59,7 @@ module Checkers
     def find_moves_for_player(player:)
       found_moves = []
       @board.each_with_index do |e, row, col|
-        next unless e == player
+        next unless pieces(player).include?(e)
 
         moves = find_available_moves(row: row, col: col, player: player)
         found_moves += moves
@@ -61,6 +69,10 @@ module Checkers
     end
 
     protected
+
+    def pieces(player)
+      player == :human ? HUMAN_PIECES : AI_PIECES
+    end
 
     def adjacent_squares(row:, col:, player:)
       possible_squares(row: row, col: col, player: player) do |squares|
@@ -93,19 +105,19 @@ module Checkers
     end
 
     def square_empty?(row:, col:)
-      @board[row, col] == :empty
+      @board[row, col].zero?
     end
 
     def set_board
       Matrix[
-        %i[empty ai empty ai empty ai empty ai],
-        %i[ai empty ai empty ai empty ai empty],
-        %i[empty ai empty ai empty ai empty ai],
-        %i[empty empty empty empty empty empty empty empty],
-        %i[empty empty empty empty empty empty empty empty],
-        %i[human empty human empty human empty human empty],
-        %i[empty human empty human empty human empty human],
-        %i[human empty human empty human empty human empty]
+        [0, 1, 0, 1, 0, 1, 0, 1],
+        [1, 0, 1, 0, 1, 0, 1, 0],
+        [0, 1, 0, 1, 0, 1, 0, 1],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [-1, 0, -1, 0, -1, 0, -1, 0],
+        [0, -1, 0, -1, 0, -1, 0, -1],
+        [-1, 0, -1, 0, -1, 0, -1, 0]
       ]
     end
   end

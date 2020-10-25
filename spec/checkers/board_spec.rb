@@ -16,14 +16,14 @@ RSpec.describe Checkers::Board do
     context 'when ai jumped over human' do
       let(:board) do
         described_class.new(board: Matrix[
-          %i[empty ai empty ai empty ai empty ai],
-          %i[ai empty ai empty ai empty ai empty],
-          %i[empty ai empty empty empty ai empty ai],
-          %i[empty empty empty empty empty empty empty empty],
-          %i[empty empty empty empty empty empty empty empty],
-          %i[ai empty human empty human empty human empty],
-          %i[empty human empty human empty human empty human],
-          %i[human empty human empty human empty human empty]
+          [0, 1, 0, 1, 0, 1, 0, 1],
+          [1, 0, 1, 0, 1, 0, 1, 0],
+          [0, 1, 0, 0, 0, 1, 0, 1],
+          [0, 0, 0, 0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0, 0, 0, 0],
+          [1, 0, -1, 0, -1, 0, -1, 0],
+          [0, -1, 0, -1, 0, -1, 0, -1],
+          [-1, 0, -1, 0, -1, 0, -1, 0]
         ])
       end
 
@@ -40,14 +40,14 @@ RSpec.describe Checkers::Board do
     context 'when ai jumped over human' do
       let(:board) do
         described_class.new(board: Matrix[
-          %i[empty ai empty ai empty ai empty ai],
-          %i[ai empty ai empty ai empty ai empty],
-          %i[empty ai empty empty empty ai empty ai],
-          %i[empty empty empty empty empty empty empty empty],
-          %i[empty empty empty empty empty empty empty empty],
-          %i[ai empty human empty human empty human empty],
-          %i[empty human empty human empty human empty human],
-          %i[human empty human empty human empty human empty]
+          [0, 1, 0, 1, 0, 1, 0, 1],
+          [1, 0, 1, 0, 1, 0, 1, 0],
+          [0, 1, 0, 0, 0, 1, 0, 1],
+          [0, 0, 0, 0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0, 0, 0, 0],
+          [1, 0, -1, 0, -1, 0, -1, 0],
+          [0, -1, 0, -1, 0, -1, 0, -1],
+          [-1, 0, -1, 0, -1, 0, -1, 0]
         ])
       end
 
@@ -106,14 +106,14 @@ RSpec.describe Checkers::Board do
     context 'when jump' do
       let(:board) do
         described_class.new(board: Matrix[
-          %i[empty ai empty ai empty ai empty ai],
-          %i[ai empty ai empty ai empty ai empty],
-          %i[empty ai empty empty empty ai empty ai],
-          %i[empty empty ai empty empty empty empty empty],
-          %i[empty human empty empty empty empty empty empty],
-          %i[empty empty human empty human empty human empty],
-          %i[empty human empty human empty human empty human],
-          %i[human empty human empty human empty human empty]
+          [0, 1, 0, 1, 0, 1, 0, 1],
+          [1, 0, 1, 0, 1, 0, 1, 0],
+          [0, 1, 0, 0, 0, 1, 0, 1],
+          [0, 0, 1, 0, 0, 0, 0, 0],
+          [0, -1, 0, 0, 0, 0, 0, 0],
+          [0, 0, -1, 0, -1, 0, -1, 0],
+          [0, -1, 0, -1, 0, -1, 0, -1],
+          [-1, 0, -1, 0, -1, 0, -1, 0]
         ])
       end
       let(:player) { :ai }
