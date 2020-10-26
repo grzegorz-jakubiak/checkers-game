@@ -4,6 +4,9 @@
 require 'bundler/setup'
 require 'checkers'
 
+window = Window.new
+window.set(title: 'Checkers')
+
 state = Checkers::Game::State.new(:human)
 scene = Checkers::GUI::Scene.new(state)
 ai = Checkers::AI::Engine::Minmax.new
@@ -16,4 +19,4 @@ on :mouse_up do |event|
   scene.handle_click(x, y) if event.button == :left
 end
 
-show
+window.show
