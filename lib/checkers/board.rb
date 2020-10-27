@@ -76,6 +76,10 @@ module Checkers
       found_moves
     end
 
+    def any_jump_moves?(player:)
+      find_moves_for_player(player: player).one? { |move| move.is_a?(JumpMove) }
+    end
+
     protected
 
     def player_pieces(player)

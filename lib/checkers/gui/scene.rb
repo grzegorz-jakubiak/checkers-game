@@ -30,7 +30,12 @@ module Checkers
             @allowed_moves = []
             @allowed_squares = []
             new_board = Checkers::Board.make_move(@state.board, move_made)
-            @state.set_state(board: new_board, turn: :ai)
+            turn = if new_board.jumped
+                     new_board.any_jump_moves?(player: :human) ? :human : :ai
+                   else
+                     :ai
+                   end
+            @state.set_state(board: new_board, turn: turn)
           end
         end
       end

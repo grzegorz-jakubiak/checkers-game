@@ -15,7 +15,17 @@ module Checkers
         check_win
         check_tie
 
-        @state.set_state(board: @ai.next_board(@state.board), turn: :human) if @state.turn == :ai
+        if @state.turn == :ai
+          new_board = @ai.next_board(@state.board)
+
+          turn = if new_board.jumped
+                   new_board.any_jump_moves?(player: :ai) ? :ai : :human
+                 else
+                   :human
+                 end
+
+          @state.set_state(board: new_board, turn: turn)
+        end
       end
 
       def check_win
