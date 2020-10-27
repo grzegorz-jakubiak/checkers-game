@@ -4,6 +4,8 @@ Checkers game with AI built with Ruby2D.
 
 ## Launching
 
+You may need to install some Ruby2D dependencies on your machine follow [this link](https://www.ruby2d.com/learn/get-started/)
+
 ```
 checkers
 ```
