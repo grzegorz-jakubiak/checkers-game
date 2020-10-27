@@ -4,11 +4,11 @@ module Checkers
   module GUI
     class Scene
       class PieceAnimation
-        attr_accessor :start_animation
         attr_writer :animation_proc
+        attr_accessor :finished
 
         def initialize
-          @start_animation = true
+          @finished = false
         end
 
         def call
@@ -16,11 +16,12 @@ module Checkers
         end
 
         class << self
-          def animate(scene, move)
-            object = scene.board.piece_at(*move.start_square)&.piece
-            square = scene.board.square_at(*move.end_square)
+          def animate(board, move)
+            object = board.piece_at(*move.start_square)&.piece
+            square = board.square_at(*move.end_square)
             x = square.x + Checkers::GUI::CIRCLE_TRANSLATION - object.x
             y = square.y + Checkers::GUI::CIRCLE_TRANSLATION - object.y
+            object.z = 10
 
             animation = PieceAnimation.new
 
@@ -46,8 +47,8 @@ module Checkers
               end
 
               if x.zero? && y.zero?
-                animation.start_animation = false
-                yield
+                animation.finished = true
+                yield if block_given?
               end
             end
 

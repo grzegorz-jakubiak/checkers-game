@@ -6,14 +6,21 @@ module Checkers
       class Board
         include Enumerable
 
+        attr_reader :animation_queue
+
         def initialize(state)
           @state = state
           @state.add_observer(self)
+          @animation_queue = []
           render_board
         end
 
         def update
-          render_board
+          @animation_queue.unshift(
+            PieceAnimation.animate(self, @state.board.last_move) do
+              render_board if @animation_queue.empty?
+            end
+          )
         end
 
         def each(&block)

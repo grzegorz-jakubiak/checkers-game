@@ -14,7 +14,7 @@ module Checkers
     include Moves
     extend Forwardable
 
-    attr_reader :board, :jumped
+    attr_reader :board, :jumped, :last_move
 
     def_delegators :board, :each_with_index, :row_count
 
@@ -43,13 +43,14 @@ module Checkers
           new_board[*move.jump_over_square] = 0
           jumped = true
         end
-        Board.new(board: new_board, jumped: jumped)
+        Board.new(board: new_board, jumped: jumped, last_move: move)
       end
     end
 
-    def initialize(board: nil, jumped: false)
+    def initialize(board: nil, jumped: false, last_move: nil)
       @board = board || set_board
       @jumped = jumped
+      @last_move = last_move
     end
 
     def calculate_score(player:)

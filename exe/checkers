@@ -19,8 +19,19 @@ window.on :mouse_up do |event|
   scene.handle_click(x, y) if event.button == :left
 end
 
+animating = nil
+
 window.update do
-  scene.animation.call if scene&.animation&.start_animation
+  if animating.nil?
+    unless scene.animation_queue.empty?
+      animating = scene.animation_queue.pop
+      animating.call
+    end
+  elsif animating.finished == false
+    animating.call
+  else
+    animating = nil
+  end
 end
 
 window.show
