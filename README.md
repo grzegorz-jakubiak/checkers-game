@@ -2,6 +2,12 @@
 
 Checkers game with AI built with Ruby2D.
 
+## Launching
+
+```
+checkers
+```
+
 ## Installation
 
 Add this line to your application's Gemfile:
