@@ -32,6 +32,10 @@ module Checkers
           return @board_objects[row, col] if @board_objects[row, col].is_a?(Square)
         end
 
+        def piece_at(row, col)
+          return @board_objects[row, col] if @board_objects[row, col].is_a?(Ruby2D::SquareWithPiece)
+        end
+
         private
 
         def render_board

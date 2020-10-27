@@ -3,11 +3,14 @@
 module Checkers
   module GUI
     class Scene
+      attr_reader :animation, :board
+
       def initialize(state)
         @state = state
         @board = Board.new(state)
         @allowed_squares = []
         @allowed_moves = []
+        @animation = nil
       end
 
       def handle_click(x, y)
@@ -24,7 +27,11 @@ module Checkers
             @allowed_moves = []
             @allowed_squares = []
             new_board = Checkers::Board.make_move(@state.board, move_made)
-            @state.set_state(board: new_board, turn: :ai)
+
+            @animation = PieceAnimation.animate(self, move_made) do
+              @state.set_state(board: new_board, turn: :ai)
+              @animation = nil
+            end
           end
         end
       end

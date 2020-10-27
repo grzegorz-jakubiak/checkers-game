@@ -12,11 +12,15 @@ scene = Checkers::GUI::Scene.new(state)
 ai = Checkers::AI::Engine::Minmax.new
 game_engine = Checkers::Game::Engine.new(state, ai)
 
-on :mouse_up do |event|
+window.on :mouse_up do |event|
   x = event.x
   y = event.y
 
   scene.handle_click(x, y) if event.button == :left
+end
+
+window.update do
+  scene.animation.call if scene&.animation&.start_animation
 end
 
 window.show
