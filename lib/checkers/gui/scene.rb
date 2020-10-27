@@ -9,9 +9,9 @@ module Checkers
 
       def_delegators :board, :animation_queue
 
-      def initialize(state)
+      def initialize(state, game_enigne)
         @state = state
-        @board = Board.new(state)
+        @board = Board.new(state, game_enigne)
         @allowed_squares = []
         @allowed_moves = []
       end

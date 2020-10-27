@@ -6,10 +6,9 @@ module Checkers
       def initialize(state, ai_engine)
         @state = state
         @ai = ai_engine
-        @state.add_observer(self)
       end
 
-      def update
+      def play
         return if @state.winner || @state.tie
 
         check_win

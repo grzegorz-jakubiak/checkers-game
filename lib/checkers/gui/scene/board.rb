@@ -8,9 +8,10 @@ module Checkers
 
         attr_reader :animation_queue
 
-        def initialize(state)
+        def initialize(state, game_engine)
           @state = state
           @state.add_observer(self)
+          @game_engine = game_engine
           @animation_queue = []
           render_board
         end
@@ -18,7 +19,8 @@ module Checkers
         def update
           @animation_queue.unshift(
             PieceAnimation.animate(self, @state.board.last_move) do
-              render_board if @animation_queue.empty?
+              render_board
+              @game_engine.play
             end
           )
         end

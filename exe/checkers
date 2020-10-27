@@ -8,9 +8,9 @@ window = Window.new
 window.set(title: 'Checkers')
 
 state = Checkers::Game::State.new(:human)
-scene = Checkers::GUI::Scene.new(state)
 ai = Checkers::AI::Engine::Minmax.new
 game_engine = Checkers::Game::Engine.new(state, ai)
+scene = Checkers::GUI::Scene.new(state, game_engine)
 
 window.on :mouse_up do |event|
   x = event.x

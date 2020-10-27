@@ -47,8 +47,8 @@ module Checkers
               end
 
               if x.zero? && y.zero?
-                animation.finished = true
                 yield if block_given?
+                animation.finished = true
               end
             end
 
