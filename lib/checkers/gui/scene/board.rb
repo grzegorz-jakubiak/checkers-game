@@ -17,6 +17,11 @@ module Checkers
         end
 
         def update
+          return if @state.winner || @state.tie
+
+          check_win
+          check_tie
+
           @animation_queue.unshift(
             PieceAnimation.animate(self, @state.board.last_move) do
               render_board
@@ -46,6 +51,30 @@ module Checkers
         end
 
         private
+
+        def check_win
+          human_pieces = @state.board.count_pieces(player: :human)
+          ai_pieces = @state.board.count_pieces(player: :ai)
+
+          @state.set_state(winner: :human) if ai_pieces.zero?
+          @state.set_state(winner: :ai) if human_pieces.zero?
+        end
+
+        def check_tie
+          @state.set_state(tie: true) if tie?
+        end
+
+        def tie?
+          return false unless @state.winner.nil?
+
+          if @state.board.find_moves_for_player(player: @state.turn).length.zero?
+            turn = @state.turn == :human ? :ai : :human
+
+            return true if @state.board.find_moves_for_player(player: turn).length.zero?
+          end
+
+          false
+        end
 
         def render_board
           clear
